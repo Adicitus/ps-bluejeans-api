@@ -28,14 +28,13 @@ function request-BlueJeansAPIAuth {
 
     $j = $r.Content | ConvertFrom-Json
 
+    
     @{
         UserID=$j.scope.user
-        Credential = $Credential
         Expires = [datetime]::now.AddSeconds($j.expires_in)
         Headers = @{
             Authorization="bearer {0}" -f $j.access_token
         }
-        Raw=$j
     }
 
 }
