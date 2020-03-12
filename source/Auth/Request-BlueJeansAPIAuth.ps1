@@ -24,7 +24,7 @@ function request-BlueJeansAPIAuth {
 
     $jsonbody = ConvertTo-UnicodeEscapedString $jsonbody
 
-    $r = Invoke-WebRequest -Method Post -Uri $uri -Body $jsonbody -Headers $headers
+    $r = Invoke-WebRequest -Method Post -Uri $uri -Body $jsonbody -Headers $headers -UseBasicParsing
 
     $j = $r.Content | ConvertFrom-Json
 
