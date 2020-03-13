@@ -19,7 +19,7 @@ function Get-BlueJeansAPIMeeting {
 
     $headers = @{
         accept="application/json"
-    } + $AuthObject.Headers.clone()
+    }
 
     if ($ExtraHeaders) {
         foreach ($header in $ExtraHeaders.Keys) {
@@ -31,11 +31,10 @@ function Get-BlueJeansAPIMeeting {
         }
     }
 
-    $r = Invoke-WebRequest -Uri $uri -Method Get -Headers $headers -UseBasicParsing
+    $r = Invoke-BlueJeansAPIRequest -Uri $uri -Method Get -AuthObject $AuthObject -Headers $headers
 
-    @{
-        statuscode=$r.statuscode
-        Meetings = ConvertFrom-UnicodeEscapedString $r.Content | ConvertFrom-Json
-    }
+    $r.Meetings = $r.Body
+
+    $r
 
 }

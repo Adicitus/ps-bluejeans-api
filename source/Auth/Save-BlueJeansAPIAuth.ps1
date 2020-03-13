@@ -8,5 +8,13 @@ function Save-BlueJeansAPIAuth {
         [hashtable]$AuthObj
     )
 
-    $AuthObj | ConvertTo-Json -Depth 10 | ConvertTo-SecureString -AsPlainText -Force | ConvertFrom-SecureString > $Path
+    $authObjSerialized = @{}
+
+    $authObjSerialized.AccessToken  = $AuthObj.AccessToken | ConvertFrom-SecureString
+    $authObjSerialized.Username     = $AuthObj.Credential.Username
+    $authObjSerialized.Password     = $AuthObj.Credential.Password | ConvertFrom-SecureString
+    $authObjSerialized.UserID       = $AuthObj.UserID
+    $authObjSerialized.Expires      = $AuthObj.Expires
+
+    $authObjSerialized | ConvertTo-Json -Depth 10 | ConvertTo-SecureString -AsPlainText -Force | ConvertFrom-SecureString > $Path
 }

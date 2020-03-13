@@ -8,8 +8,13 @@ function Restore-BlueJeansAPIAuth {
 
     $ss = Get-Content $Path | ConvertTo-SecureString
     $o = Unlock-SecureString $ss | ConvertFrom-Json
-    $h = @{}
-    $o | Get-Member -MemberType NoteProperty | % { $n = $_.Name; $h[$n] = $o.$n }
 
-    $h
+    $auth = @{}
+
+    $auth.Expires = $o.Expires
+    $auth.UserID  = $o.UserID
+    $auth.Credential = New-PScredential -Username $o.Username -Password ($o.Password | ConvertTo-SecureString)
+    $auth.AccessToken = $o.AccessToken | ConvertTo-SecureString
+    
+    $auth
 }

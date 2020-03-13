@@ -30,11 +30,10 @@ function request-BlueJeansAPIAuth {
 
     
     @{
+        Credential=$Credential
         UserID=$j.scope.user
         Expires = [datetime]::now.AddSeconds($j.expires_in)
-        Headers = @{
-            Authorization="bearer {0}" -f $j.access_token
-        }
+        AccessToken = ConvertTo-SecureString $j.access_token -AsPlainText -Force
     }
 
 }

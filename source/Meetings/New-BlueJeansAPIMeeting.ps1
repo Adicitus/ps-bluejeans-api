@@ -33,7 +33,7 @@ function New-BlueJeansAPIMeeting {
 
     $headers = @{
         "Content-Type"="application/json"
-    } + $AuthObject.Headers.clone()
+    }
 
     if ($ExtraHeaders) {
         foreach ($header in $ExtraHeaders.Keys) {
@@ -80,11 +80,10 @@ function New-BlueJeansAPIMeeting {
         }
     }
 
-    $jsonbody = $body | ConvertTo-Json -Depth 10
-    $jsonbody = ConvertTo-UnicodeEscapedString $jsonbody
+    $r = Invoke-BlueJeansAPIRequest -Uri $uri -Method Post -AuthObject $AuthObject -Headers $headers -Body $body
 
-    $r = Invoke-WebRequest -Uri $uri -Method Post -Headers $headers -Body $jsonbody -UseBasicParsing
+    $r.Meeting = $r.Body
 
-    @{ Statuscode = $r.statuscode; Meeting=(ConvertFrom-UnicodeEscapedString $r.Content | ConvertFrom-Json) }
+    $r
 
 }

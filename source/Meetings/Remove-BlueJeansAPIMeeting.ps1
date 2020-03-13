@@ -14,7 +14,7 @@ function Remove-BlueJeansAPIMeeting {
 
     write-Host $uri
 
-    $headers = $AuthObject.Headers.clone()
+    $headers = @{}
 
     if ($ExtraHeaders) {
         foreach ($header in $ExtraHeaders.Keys) {
@@ -26,6 +26,6 @@ function Remove-BlueJeansAPIMeeting {
         }
     }
 
-    Invoke-WebRequest -Uri $uri -Method Delete -Headers $headers -UseBasicParsing
+    Invoke-BlueJeansAPIRequest -Uri $uri -Method Delete -AuthObject $AuthObject -Headers $headers
 
 }
