@@ -13,7 +13,7 @@ function Restore-BlueJeansAPIAuth {
 
     $auth.Expires = $o.Expires
     $auth.UserID  = $o.UserID
-    $auth.Credential = New-PScredential -Username $o.Username -Password ($o.Password | ConvertTo-SecureString)
+    $auth.Credential = New-PScredential -Username $o.Username -SecurePassword ($o.Password | ConvertTo-SecureString)
     $auth.AccessToken = $o.AccessToken | ConvertTo-SecureString
     
     $auth
