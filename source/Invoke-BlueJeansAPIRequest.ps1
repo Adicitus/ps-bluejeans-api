@@ -34,8 +34,10 @@ function Invoke-BlueJeansAPIRequest {
         $reqArgs.Body = ConvertTo-UnicodeEscapedString $jsonBody
     }
 
-    Write-Debug "Invoking WebRequest with the following body:"
-    Write-Debug $reqArgs.Body
+    if ($reqArgs.ContainsKey("Body")) {
+        Write-Debug "Invoking WebRequest with the following body:"
+        Write-Debug $reqArgs.Body
+    }
 
     $r = try {
         Invoke-WebRequest @reqArgs -UseBasicParsing
