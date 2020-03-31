@@ -1,6 +1,7 @@
 #New-BlueJeansAPIMeeting.ps1
 
 function New-BlueJeansAPIMeeting {
+    [CmdletBinding()]
     param(
         [Parameter(Mandatory=$true, position=1)]
         [hashtable]$AuthObject,
@@ -55,7 +56,7 @@ function New-BlueJeansAPIMeeting {
                 param([datetime]$d)
 
                 $ts = $d - [datetime]::new(1970, 1, 1)
-                $ts.TotalMilliseconds
+                $ts.TotalSeconds
             }
 
             $b = @{}
@@ -82,7 +83,7 @@ function New-BlueJeansAPIMeeting {
 
     $r = Invoke-BlueJeansAPIRequest -Uri $uri -Method Post -AuthObject $AuthObject -Headers $headers -Body $body
 
-    $r.Meeting = $r.Body
+    # $r.Meeting = $r.Body
 
     $r
 

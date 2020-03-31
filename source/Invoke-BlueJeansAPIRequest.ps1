@@ -1,6 +1,7 @@
 #Invoke-BlueJeansAPIRequest.ps1
 
 function Invoke-BlueJeansAPIRequest {
+    [CmdletBinding()]
     param(
         [Parameter(Mandatory=$true)]
         [string]$Uri,
@@ -33,6 +34,9 @@ function Invoke-BlueJeansAPIRequest {
         $reqArgs.Body = ConvertTo-UnicodeEscapedString $jsonBody
     }
 
+    Write-Debug "Invoking WebRequest with the following body:"
+    Write-Debug $reqArgs.Body
+
     $r = try {
         Invoke-WebRequest @reqArgs -UseBasicParsing
     } catch {
@@ -40,7 +44,17 @@ function Invoke-BlueJeansAPIRequest {
     }
 
     switch ($r.GetType().Name) {
-        ErrorRecord {}
+        ErrorRecord {
+            if ($r.Exception -is [System.Net.WebException]) {
+                @{
+                    StatusCode = $r.Exception.Response.StatusCode
+                    Exception = $r.Exception
+                    Response  = $r.Exception.Response
+                }
+            } else {
+                throw $r
+            }
+        }
         default {
             @{
                 Statuscode=$r.statuscode
