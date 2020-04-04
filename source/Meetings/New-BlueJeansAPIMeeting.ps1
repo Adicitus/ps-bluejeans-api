@@ -83,7 +83,7 @@ function New-BlueJeansAPIMeeting {
 
     $r = Invoke-BlueJeansAPIRequest -Uri $uri -Method Post -AuthObject $AuthObject -Headers $headers -Body $body
 
-    # $r.Meeting = $r.Body
+    $r.Meeting = $r.Body
 
     $r
 
