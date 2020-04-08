@@ -27,6 +27,10 @@ function set-BlueJeansAPIMeeting {
         [string]$Description,
         [Parameter(Mandatory=$false, ParameterSetName="Params")]
         [switch]$IsLargeMeeting,
+        [Parameter(Mandatory=$false, ParameterSetName="Params")]
+        [bool]$IsTimeless,
+        [Parameter(Mandatory=$false, ParameterSetName="Params")]
+        [bool]$IsEndless,
         [Parameter(Mandatory=$false)]
         [hashtable]$ExtraHeaders
     )
@@ -71,6 +75,8 @@ function set-BlueJeansAPIMeeting {
                 TimeZone        = { $b.timezone = $TimeZone }
                 Description     = { $b.description = $Description }
                 IsLargeMeeting  = { $b.isLargeMeeting = $true }
+                IsTimeless      = { $b.timelessMeeting = $IsTimeless }
+                IsEndless       = { $b.endlessMeeting  = $IsEndless }
             }
 
             $PSBoundParameters.GetEnumerator() | % {
