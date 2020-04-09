@@ -26,6 +26,10 @@ function New-BlueJeansAPIMeeting {
         [string]$Description,
         [Parameter(Mandatory=$false, ParameterSetName="Params")]
         [switch]$IsLargeMeeting,
+        [Parameter(Mandatory=$false, ParameterSetName="Params")]
+        [bool]$IsTimeless,
+        [Parameter(Mandatory=$false, ParameterSetName="Params")]
+        [bool]$IsEndless,
         [Parameter(Mandatory=$false)]
         [hashtable]$ExtraHeaders
     )
@@ -59,22 +63,29 @@ function New-BlueJeansAPIMeeting {
                 $ts.TotalMilliSeconds
             }
 
-            $b = @{}
-
-            $b.title = $Title
-            $b.endPointType = $EndpointType
-            $b.endPointVersion = $EndpointVersion
-
-            $b.timezone = $TimeZone
-            $b.start    = & $toUnixMS $StartTime
-            $b.end      = & $toUnixMS $EndTime
-
-            if ($d = $PSBoundParameters["Description"]) {
-                $b.description = $d
+            $b = @{
+                endPointType = $EndpointType
+                endPointVersion = $EndpointVersion
+                timezone = $TimeZone
             }
 
-            if ($PSBoundParameters.ContainsKey("IsLargeMeeting")) {
-                $b.isLargeMeeting = $true
+            $mapping = @{
+                Title = { $b.title = $Title }
+                StartTime       = { $b.start = & $toUnixMS $StartTime }
+                EndTime         = { $b.end = & $toUnixMS $EndTime }
+                EndpointType    = { $b.endPointType = $EndpointType }
+                EndpointVersion = { $b.endPointVersion = $EndpointVersion }
+                TimeZone        = { $b.timezone = $TimeZone }
+                Description     = { $b.description = $Description }
+                IsLargeMeeting  = { $b.isLargeMeeting = $true }
+                IsTimeless      = { $b.timelessMeeting = $IsTimeless }
+                IsEndless       = { $b.endlessMeeting  = $IsEndless }
+            }
+
+            $PSBoundParameters.GetEnumerator() | % {
+                if ($mapping.ContainsKey($_.Key)) {
+                    & $mapping[$_.Key]
+                }
             }
 
             $b
