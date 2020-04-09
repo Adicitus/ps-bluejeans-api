@@ -57,7 +57,7 @@ function set-BlueJeansAPIMeeting {
                 param([datetime]$d)
 
                 $ts = $d - [datetime]::new(1970, 1, 1)
-                $ts.TotalSeconds
+                $ts.TotalMilliSeconds
             }
 
             $b = @{}
