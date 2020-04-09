@@ -6,6 +6,7 @@ function Get-BlueJeansAPIMeeting {
         [hashtable]$AuthObject,
         [Parameter(Mandatory=$false, Position=2)]
         [string]$UserID = $AuthObject.UserID,
+        [ValidateNotNullOrEmpty()]
         [Parameter(Mandatory=$false, position=3)]
         [string]$MeetingInternalID
     )
