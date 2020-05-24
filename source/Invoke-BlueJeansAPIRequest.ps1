@@ -58,10 +58,15 @@ function Invoke-BlueJeansAPIRequest {
             }
         }
         default {
-            @{
+            $result = @{
                 Statuscode=$r.statuscode
-                Body=ConvertFrom-UnicodeEscapedString $r.Content | ConvertFrom-Json
             }
+
+            if ($r.Content) {
+                $result.Body = ConvertFrom-UnicodeEscapedString $r.Content | ConvertFrom-Json
+            }
+
+            $result
         }
     }
 }
